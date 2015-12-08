@@ -32,7 +32,7 @@ function bst(){
     //check if the bst is empty, if it is, then set the root to the new node
     if(this.isEmpty()){
       this.root = nNode;
-      return true;
+      return this;
     }
     
     //set a runner variable to the root of the bst
@@ -75,4 +75,47 @@ function bst(){
     }
     return false;
   }
+  
+  //add get min method
+  this.min = function(){
+    if(this.isEmpty()){
+      return false;
+    }
+    var r = this.root;
+    while(r.left){
+      r = r.left;
+    }
+    return r.val;
+  }
+  
+  //add get max method
+  this.max = function(){
+    if(this.isEmpty()){
+      return false;
+    }
+    var r = this.root;
+    while(r.right){
+      r = r.right;
+    }
+    return r.val;
+  }
+  
+  //add isValid method using recursion
+  this.isValid = function(r){
+    if(r == undefined){ var r = this.root; }
+    if(r == null){ return true; }
+    if(( r.left == null || r.left.val < r.val ) &&( r.right == null || r.right.val > r.val )){
+      return this.isValid(r.left) && this.isValid(r.right);
+    } else {
+      return false;
+    }
+  }
+  
+  //add size method using recursion
+  this.size = function(r){
+    if(r == undefined){ var r = this.root; }
+    if(r == null){ return 0; }
+    return this.size(r.left) + this.size(r.right) + 1;
+  }
+  
 }
