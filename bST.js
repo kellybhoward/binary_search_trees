@@ -4,7 +4,7 @@
 //Binary Search Tree Node
 //Just like a linked list node except instead of being linear, it branches off left and right by < / >
 
-function btNode(val){
+function Btnode(val){
   this.val = val;
   this.left = null;
   this.right = null;
@@ -13,7 +13,7 @@ function btNode(val){
 //Binary Search Tree creation
 //Just like a linked list but instead of a head, it has a root pointing that will eventually point to a starting node
 
-function bst(){
+function Bst(){
   this.root = null;
   
   //make an isEmpty function to use throughout the other methods
@@ -27,7 +27,7 @@ function bst(){
   
   //make an add function to add new UNIQUE nodes to the bst
   this.add = function(val){
-    nNode = new btNode(val);
+    nNode = new Btnode(val);
     
     //check if the bst is empty, if it is, then set the root to the new node
     if(this.isEmpty()){
@@ -44,10 +44,10 @@ function bst(){
       }
       else if(nNode.val > r.val && r.right == null){
         r.right = nNode;
-        return true;
+        return this;
       }
       else if(nNode.val == r.val){
-        return "Already have that value";
+        return this;
       }
       else if(nNode.val < r.val){
         r = r.left;
@@ -102,9 +102,9 @@ function bst(){
   
   //add isValid method using recursion
   this.isValid = function(r){
-    if(r == undefined){ var r = this.root; }
-    if(r == null){ return true; }
-    if(( r.left == null || r.left.val < r.val ) &&( r.right == null || r.right.val > r.val )){
+    if(r === undefined){ var r = this.root; }
+    if(r === null){ return true; }
+    if(( r.left === null || r.left.val < r.val ) &&( r.right === null || r.right.val > r.val )){
       return this.isValid(r.left) && this.isValid(r.right);
     } else {
       return false;
@@ -113,9 +113,18 @@ function bst(){
   
   //add size method using recursion
   this.size = function(r){
-    if(r == undefined){ var r = this.root; }
-    if(r == null){ return 0; }
+    if(r === undefined){ var r = this.root; }
+    if(r === null){ return 0; }
     return this.size(r.left) + this.size(r.right) + 1;
   }
   
 }
+//testing methods
+bst = new Bst();
+console.log(bst.isEmpty());
+console.log(bst.add(4).add(6).add(5).add(2).add(3));
+console.log(bst.size());
+console.log(bst.min());
+console.log(bst.max());
+console.log(bst.isValid());
+console.log(bst.contains(5));
