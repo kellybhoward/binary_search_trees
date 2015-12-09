@@ -3,11 +3,12 @@
 
 //Binary Search Tree Node
 //Just like a linked list node except instead of being linear, it branches off left and right by < / >
-
+//add an attribute 'parent' for use in future bst methods
 function Btnode(val){
   this.val = val;
   this.left = null;
   this.right = null;
+  this.parent = null;
 }
 
 //Binary Search Tree creation
@@ -39,10 +40,12 @@ function Bst(){
     var r = this.root; 
     while(r){
       if(nNode.val < r.val && r.left == null){
+        nNode.parent = r;
         r.left = nNode;
         return this;
       }
       else if(nNode.val > r.val && r.right == null){
+        nNode.parent = r;
         r.right = nNode;
         return this;
       }
@@ -118,6 +121,78 @@ function Bst(){
     return this.size(r.left) + this.size(r.right) + 1;
   }
   
+  this.remove = function(value){
+    //if the bst doesn't contain the value, return the bst and don't remove anything
+    if(!this.contains(value)){
+      return this;
+    }
+    var r = this.root;
+    while(r){
+      //if r is the value we want to remove
+       if(r.val == value){
+      //if r is the value and r has no connection and we are at the root (avoid pulling val from null)
+        if(r.left === null && r.right === null && r.parent == null){
+          this.root = null;
+          return this;
+        }
+      //if r is the value and r has no connection and is not parent
+        else if(r.left === null && r.right === null){
+          if(r.parent.val > r.val){
+            r.parent.left = null;
+          } else{
+              r.parent.right = null;
+            }
+          return this;
+        }
+        //if r is the value and r has a right connection
+        else if(r.left === null){
+          if(r.parent.val > r.val){
+            r.parent.left = r.right;
+          } else{
+              r.parent.right = r.right;
+            }
+          return this;
+        }
+      //if r is the value and r has a left connection
+        else if(r.right === null){
+          if(r.parent.val > r.val){
+            r.parent.left = r.left;
+          } else{
+              r.parent.right = r.left;
+            }
+          return this;
+        }
+      //if r is the value and has both a left and right connection, search the left side for the maximum and swap values
+        else{
+          var max = r.left;
+          //find max on the left side of r
+          while(max){
+            if(max.right){
+              var temp = max;
+              max = max.right;
+              max.parent = temp;
+            }
+          }
+          r.val = max.val;
+          if(max.parent.right == max){
+            max.parent.right = null;
+          }
+          return this;
+        }
+      }
+      //r doesn't match so go left if it's too big
+      else if(r.val > value){
+        r.left.parent = r;
+        r = r.left;
+      }
+      //r doesn't match so go right if it's too small
+      else{
+        r.right.parent = r;
+        r = r.right;
+      }
+    }
+  }
+  
 }
 //testing methods
 bst = new Bst();
@@ -128,3 +203,5 @@ console.log(bst.min());
 console.log(bst.max());
 console.log(bst.isValid());
 console.log(bst.contains(5));
+var bst2 = new Bst();
+console.log(bst2.add(4).add(6).add(10).add(5).add(1).add(2).add(3).remove(2));
