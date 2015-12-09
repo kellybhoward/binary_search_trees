@@ -40,7 +40,7 @@ function Bst(){
     while(r){
       if(nNode.val < r.val && r.left == null){
         r.left = nNode;
-        return true;
+        return this;
       }
       else if(nNode.val > r.val && r.right == null){
         r.right = nNode;
