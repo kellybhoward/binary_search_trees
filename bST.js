@@ -9,6 +9,19 @@ function Btnode(val){
   this.left = null;
   this.right = null;
   this.parent = null;
+  this.height = function(){
+    if(this.left){
+      var lHeight = this.left.height();
+    } else{
+      var lHeight = 0;
+    }
+    if(this.right){
+      var rHeight = this.right.height();
+    } else{
+      var rHeight = 0;
+    }
+    return 1 + Math.max(lHeight, rHeight);
+  }
 }
 
 //Binary Search Tree creation
@@ -193,6 +206,25 @@ function Bst(){
     }
   }
   
+  //using the BstNode height function, we can find out the longest branch from the tree root
+  this.height = function(){
+    if(this.root === null){
+      return 0;
+    }
+    return this.root.height();
+  }
+  
+  //checking balance based on the definition that a 'balanced' tree has a branch (left and right) that are within 1 height increment away from eachother
+  this.balanced = function(){
+    if(this.root === null){
+      return true;
+    }
+    if(Math.abs(this.root.left.height() - this.root.right.height()) <= 1){
+      return true;
+    } else{
+      return false;
+    }
+  }
 }
 //testing methods
 bst = new Bst();
@@ -204,4 +236,6 @@ console.log(bst.max());
 console.log(bst.isValid());
 console.log(bst.contains(5));
 var bst2 = new Bst();
-console.log(bst2.add(4).add(6).add(10).add(5).add(1).add(2).add(3).remove(2));
+console.log(bst2.add(4).add(6).add(10).add(5).add(1).add(2).add(3).add(11).add(15).add(16).add(17).remove(16));
+console.log(bst2.height());
+console.log(bst2.balanced());
